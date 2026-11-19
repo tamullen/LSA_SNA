@@ -18,8 +18,8 @@ euclid = function(x,y) {  # Widdows 5.11
 
 euclid(df['battle',], df['king',])
 ```
-## Cosine Distance
-While Euclidean distance can provide a good measure of the distance between vectors, it is overly sensitive to the magnitude of the vectors.  For example, vectors whose magnitudes are smaller (the terms appear less frequently throughout the corpus) will apear to be more similar because they are closer to the origin and thus closer together. Cosine distance corrects for this by dividing the dot product of the vectors by their normalized lengths.
+## Cosine Similarity Measure
+While Euclidean distance can provide a good measure of the distance between vectors, it is overly sensitive to the magnitude of the vectors.  For example, vectors whose magnitudes are smaller (the terms appear less frequently throughout the corpus) will apear to be more similar because they are closer to the origin and thus closer together. Cosine similarity reduces this sensitivity by dividing the dot product of the vectors by the product of their magnitudes. The result is the cosine of the angle between the vectors, not an angular distance; higher values indicate greater directional alignment.
 
 ```{r}
 df = as.matrix(read.csv('shakespeare.csv', row.names=1))
@@ -142,7 +142,7 @@ It's clear that these results are what we might expect to be close to the word b
 sort(battleSim, decreasing=TRUE)[1:10]
 ```
 ## Cosine Similarity
-Using the magnitude-regulated cosine similarity, we can get more robust results.  Cosine similarity measures the angle between the two term vectors in the corpus and thus considers the contexts in which the term appears more fully rather than the raw frequency of the terms across the corpus.
+Using the magnitude-regulated cosine similarity, we can get more robust results.  Cosine similarity measures the cosine of the angle between the two term vectors in the corpus and thus considers the contexts in which the term appears more fully rather than the raw frequency of the terms across the corpus.
 ```{r warning=FALSE}
 cosineSim = function(df, term) {
   df = as.matrix(df)
@@ -178,7 +178,7 @@ sort(battleCos, decreasing=TRUE)[1:10]
 ```
 
 ## Similarity Post-tfidf
-Similarly, post-tfidf can provide different results by allowing us to ignore the values of terms that occur most frequently and in most documents because these values are already all zeros. Tfidf gives us similar terms as the straight cosine distance does above:
+Similarly, post-tfidf can provide different results by allowing us to ignore the values of terms that occur most frequently and in most documents because these values are already all zeros. Tfidf gives us similar terms as the straight cosine similarity does above:
 ```{r warning=FALSE}
 df4 = tfidf(df)
 battleSim = euclidSim(df4, 'battle') #Uses our tfidf data frame from above.
